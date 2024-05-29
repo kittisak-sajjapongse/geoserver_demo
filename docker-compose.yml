@@ -1,0 +1,53 @@
+version: "3.2"
+
+networks:
+  geo_server_network:
+    name: geo_server_network
+    driver: bridge
+
+services:
+  geo_db:
+    image: postgis/postgis:13-master
+    container_name: geo_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=geoserver
+      - POSTGRES_DB=geoserver
+    volumes:
+      - ./container_data/geo_db/data:/var/lib/postgresql/data/
+    networks:
+      - geo_server_network
+    ports:
+      - 5432:5432
+    restart: always
+
+  db_admin:
+    image: dpage/pgadmin4
+    container_name: db_admin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=geoserver
+    volumes:
+      - ./container_data/pgadmin/servers.json:/pgadmin4/servers.json
+    networks:
+      - geo_server_network
+    ports:
+      - 80:80
+    depends_on:
+      - geo_db
+    restart: always
+
+  geo_server:
+    image: docker.osgeo.org/geoserver:2.24.1
+    container_name: geo_server
+    # environment:
+    #   - SKIP_DEMO_DATA=true
+    volumes:
+      - ./container_data/geo_server/:/opt/geoserver_data/
+    networks:
+      - geo_server_network
+    ports:
+      - 8080:8080
+    depends_on:
+      - geo_db
+    restart: always
