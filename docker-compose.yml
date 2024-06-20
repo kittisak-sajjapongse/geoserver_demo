@@ -40,7 +40,11 @@ services:
   geo_server:
     image: docker.osgeo.org/geoserver:2.24.1
     container_name: geo_server
-    # environment:
+    environment:
+      - INSTALL_EXTENSIONS=true
+      - STABLE_EXTENSIONS=metadata,authkey
+      - CORS_ENABLED=true
+      - ROOT_WEBAPP_REDIRECT=true
     #   - SKIP_DEMO_DATA=true
     volumes:
       - ./container_data/geo_server/:/opt/geoserver_data/

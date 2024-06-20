@@ -20,6 +20,8 @@ wfs_url = 'http://localhost:8080/geoserver/wfs'
 # This example assumes you want to insert a new point feature
 
 headers = {'Content-Type': 'application/xml'}
+
+# This polygon is located in Bangkok Thailand
 new_feature_xml = f"""
 <wfs:Transaction service="WFS" version="1.1.0"
     xmlns:wfs="http://www.opengis.net/wfs"
