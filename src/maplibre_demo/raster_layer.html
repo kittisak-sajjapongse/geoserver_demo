@@ -45,8 +45,8 @@
                     }
                 ]
             },
-            center: [-115.9240, 38.0560], // starting position [lng, lat]
-            zoom: 5 // starting zoom
+	    center: [104.233572, 15.7839253],
+            zoom: 12 // starting zoom
         });
 
         // Add zoom and rotation controls to the map.
@@ -63,16 +63,22 @@
                     // Note:
                     // 1. We need to use EPSG:3857 for specifying Bbox. Therefore, 'srs' shoule be EPSG:3857 as well.
                     // 2. We must specify TRANSPARENT=true for the tiles that doesn't contain raster data to be transparent. Otherwise the tiles will be all white.
-                    `http://localhost:8080/geoserver/kitty/wms?service=WMS&version=1.1.0&request=GetMap&layers=kitty%3Acalifornia&bbox={bbox-epsg-3857}&width=768&height=708&srs=EPSG%3A3857&styles=&format=image%2Fpng&TRANSPARENT=true`
+                    `http://139.59.221.224:8080/geoserver/gis/wms?service=WMS&version=1.1.0&request=GetMap&layers=gis%3AIMG_T2V_20240603031738_PROJECTED_PMS_32&bbox={bbox-epsg-3857}&width=512&height=512&srs=EPSG%3A3857&styles=&format=image%2Fpng&TRANSPARENT=true`
                 ],
-                'tileSize': 768
+                'tileSize': 512
             });
 
             map.addLayer({
                 'id': 'wms-layer',
                 'type': 'raster',
                 'source': 'wms-source',
-                'paint': {}
+                // Note: For adjusting the raster layer, refer to: https://maplibre.org/maplibre-style-spec/layers/#raster-opacity
+                'paint': {
+                    'raster-opacity': 1.0,
+                    'raster-brightness-min': 0.0,
+                    'raster-brightness-max': 0.5,
+                    'raster-contrast': 0.9
+                }
             });
         });
     </script>
