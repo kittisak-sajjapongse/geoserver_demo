@@ -45,7 +45,7 @@
                     }
                 ]
             },
-	    center: [104.233572, 15.7839253],
+	        center: [102.498554, 13.621803],
             zoom: 12 // starting zoom
         });
 
@@ -57,27 +57,45 @@
 
         // Add the WMS layer to the map
         map.on('load', () => {
-            map.addSource('wms-source', {
+            map.addSource('geoserver_gis_01', {
                 'type': 'raster',
                 'tiles': [
                     // Note:
                     // 1. We need to use EPSG:3857 for specifying Bbox. Therefore, 'srs' shoule be EPSG:3857 as well.
                     // 2. We must specify TRANSPARENT=true for the tiles that doesn't contain raster data to be transparent. Otherwise the tiles will be all white.
-                    `http://139.59.221.224:8080/geoserver/gis/wms?service=WMS&version=1.1.0&request=GetMap&layers=gis%3AIMG_T2V_20240603031738_PROJECTED_PMS_32&bbox={bbox-epsg-3857}&width=512&height=512&srs=EPSG%3A3857&styles=&format=image%2Fpng&TRANSPARENT=true`
+                    `http://167.172.94.39:8000//geoserver/gis/wms?service=WMS&version=1.1.0&request=GetMap&layers=gis%3A01&bbox={bbox-epsg-3857}&width=512&height=512&srs=EPSG%3A3857&styles=&format=image%2Fpng&TRANSPARENT=true`
                 ],
                 'tileSize': 512
             });
 
             map.addLayer({
-                'id': 'wms-layer',
+                'id': 'wms-layer_01',
                 'type': 'raster',
-                'source': 'wms-source',
+                'source': 'geoserver_gis_01',
                 // Note: For adjusting the raster layer, refer to: https://maplibre.org/maplibre-style-spec/layers/#raster-opacity
                 'paint': {
-                    'raster-opacity': 1.0,
-                    'raster-brightness-min': 0.0,
-                    'raster-brightness-max': 0.5,
-                    'raster-contrast': 0.9
+                    'raster-opacity': 1.0
+                }
+            });
+
+            map.addSource('geoserver_gis_02', {
+                'type': 'raster',
+                'tiles': [
+                    // Note:
+                    // 1. We need to use EPSG:3857 for specifying Bbox. Therefore, 'srs' shoule be EPSG:3857 as well.
+                    // 2. We must specify TRANSPARENT=true for the tiles that doesn't contain raster data to be transparent. Otherwise the tiles will be all white.
+                    `http://167.172.94.39:8000//geoserver/gis/wms?service=WMS&version=1.1.0&request=GetMap&layers=gis%3A02&bbox={bbox-epsg-3857}&width=512&height=512&srs=EPSG%3A3857&styles=&format=image%2Fpng&TRANSPARENT=true`
+                ],
+                'tileSize': 512
+            });
+
+            map.addLayer({
+                'id': 'wms-layer_02',
+                'type': 'raster',
+                'source': 'geoserver_gis_02',
+                // Note: For adjusting the raster layer, refer to: https://maplibre.org/maplibre-style-spec/layers/#raster-opacity
+                'paint': {
+                    'raster-opacity': 1.0
                 }
             });
         });
